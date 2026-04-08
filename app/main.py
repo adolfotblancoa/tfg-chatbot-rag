@@ -1,17 +1,18 @@
 from fastapi import FastAPI
+from app.api.routes import router
+from app.core.config import settings
+from app.db.sqlite import init_db
 
 app = FastAPI(
-    title="TFG RAG CEU",
+    title=settings.app_name,
     description="API del asistente conversacional basado en RAG",
-    version="0.1.0"
+    version="0.2.0"
 )
 
 
-@app.get("/")
-def root():
-    return {"message": "API funcionando 🚀"}
+@app.on_event("startup")
+def on_startup():
+    init_db()
 
 
-@app.get("/health")
-def health_check():
-    return {"status": "ok"}
+app.include_router(router)
