@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from app.db.models import ChatRequest, ChatResponse
-from app.services.chat_service import generate_dummy_response, save_chat_interaction
+from app.services.chat_service import process_chat_message
 
 router = APIRouter()
 
@@ -17,6 +17,5 @@ def health_check():
 
 @router.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest):
-    reply = generate_dummy_response(request.message)
-    save_chat_interaction(request.message, reply)
+    reply = process_chat_message(request.message)
     return ChatResponse(reply=reply)
