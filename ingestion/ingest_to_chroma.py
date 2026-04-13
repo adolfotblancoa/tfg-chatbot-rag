@@ -20,6 +20,23 @@ collection = client.get_or_create_collection(
 )
 
 
+def infer_faculty(source: str) -> str:
+    source_lower = source.lower()
+
+    if "farmacia" in source_lower:
+        return "farmacia"
+    if "medicina" in source_lower:
+        return "medicina"
+    if "derecho" in source_lower:
+        return "derecho"
+    if "eps" in source_lower or "politecnica" in source_lower:
+        return "eps"
+    if "hum" in source_lower or "com" in source_lower:
+        return "humanidades_comunicacion"
+
+    return "general"
+
+
 def ingest(reset_collection: bool = False):
     global collection
 
@@ -45,11 +62,13 @@ def ingest(reset_collection: bool = False):
 
         for i, chunk in enumerate(chunks):
             all_chunks.append(chunk)
-            ids.append(f"{doc['source']}_{i}")
+            ids.append(f"{doc['source']}_p{doc['page']}_{i}")
             metadatas.append({
                 "source": doc["source"],
                 "doc_type": doc["type"],
-                "chunk_index": i
+                "page": doc["page"],
+                "chunk_index": i,
+                "faculty": infer_faculty(doc["source"])
             })
 
     if all_chunks:
@@ -59,7 +78,7 @@ def ingest(reset_collection: bool = False):
             metadatas=metadatas
         )
 
-    print(f"Ingestados {len(all_chunks)} chunks de {len(documents)} documentos")
+    print(f"Ingestados {len(all_chunks)} chunks de {len(documents)} unidades documentales")
 
 
 if __name__ == "__main__":
