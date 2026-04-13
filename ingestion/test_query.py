@@ -1,6 +1,6 @@
 from app.rag.retriever import retrieve_context_with_metadata
 
-query = "¿Qué opciones de idioma tiene Medicina?"
+query = "¿Dónde está el campus?"
 
 results = retrieve_context_with_metadata(query, n_results=3)
 

@@ -29,6 +29,8 @@ def infer_faculty(source: str) -> str:
         return "medicina"
     if "derecho" in source_lower:
         return "derecho"
+    if "econom" in source_lower or "economicas" in source_lower:
+        return "economicas"
     if "eps" in source_lower or "politecnica" in source_lower:
         return "eps"
     if "hum" in source_lower or "com" in source_lower:
