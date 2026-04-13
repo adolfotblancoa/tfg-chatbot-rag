@@ -1,29 +1,17 @@
-import chromadb
-from chromadb.utils import embedding_functions
-from app.core.config import settings
+from app.rag.retriever import retrieve_context_with_metadata
 
-# conectar a la misma DB
-client = chromadb.PersistentClient(path=settings.chroma_db_path)
+query = "¿Donde esta el campus?"
 
-embedding_function = embedding_functions.OpenAIEmbeddingFunction(
-    api_key=settings.openai_api_key,
-    model_name="text-embedding-3-small"
-)
+results = retrieve_context_with_metadata(query, n_results=3)
 
-collection = client.get_or_create_collection(
-    name="ceu_knowledge",
-    embedding_function=embedding_function
-)
+print("\nRESULTADOS:\n")
 
-# consulta de prueba
-query = "¿Dónde está el campus?"
+documents = results["documents"][0]
+metadatas = results["metadatas"][0]
 
-results = collection.query(
-    query_texts=[query],
-    n_results=2
-)
-
-print("\nRESULTADOS:")
-for i, doc in enumerate(results["documents"][0]):
-    print(f"\nChunk {i+1}:")
+for i, (doc, meta) in enumerate(zip(documents, metadatas), start=1):
+    print(f"Resultado {i}")
+    print(f"Fuente: {meta.get('source')}")
+    print(f"Chunk: {meta.get('chunk_index')}")
     print(doc)
+    print("-" * 60)
