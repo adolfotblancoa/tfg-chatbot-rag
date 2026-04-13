@@ -1,22 +1,32 @@
+def normalize_question(text: str) -> str:
+    text = text.lower().strip()
+    replacements = {
+        "á": "a",
+        "é": "e",
+        "í": "i",
+        "ó": "o",
+        "ú": "u"
+    }
+    for old, new in replacements.items():
+        text = text.replace(old, new)
+    return " ".join(text.split())
+
+
 def detect_question_type(user_question: str) -> str:
-    question = user_question.lower()
+    question = normalize_question(user_question)
 
     list_patterns = [
-        "qué grados",
         "que grados",
-        "cuáles son los grados",
         "cuales son los grados",
-        "qué dobles grados",
         "que dobles grados",
-        "qué titulaciones",
+        "que doble grados",
         "que titulaciones",
-        "qué opciones hay",
         "que opciones hay",
-        "qué carreras",
         "que carreras",
         "lista de",
         "dime los grados",
-        "dime los dobles grados"
+        "dime los dobles grados",
+        "dime los doble grados"
     ]
 
     if any(pattern in question for pattern in list_patterns):
@@ -24,19 +34,19 @@ def detect_question_type(user_question: str) -> str:
 
     return "standard"
 
+
 def is_broad_question(user_question: str) -> bool:
-    question = user_question.lower().strip()
+    question = normalize_question(user_question)
 
     broad_patterns = [
-        "qué grados hay",
         "que grados hay",
-        "qué carreras hay",
         "que carreras hay",
-        "qué titulaciones hay",
         "que titulaciones hay",
         "toda la oferta",
         "todas las carreras",
-        "todos los grados"
+        "todos los grados",
+        "que dobles grados hay",
+        "que doble grados hay"
     ]
 
     return question in broad_patterns
@@ -57,12 +67,12 @@ Instrucciones:
 - Responde de forma natural, clara y directa.
 - No menciones el contexto, los fragmentos, ni expliques cómo has obtenido la información.
 - No digas frases como "según el contexto", "la información proporcionada" o similares.
+- No remitas al usuario a páginas, documentos, apartados o fragmentos.
 - No desarrolles una sola opción si el usuario está pidiendo varias.
 - Si aparecen varias opciones, enuméralas de forma ordenada y limpia.
 - Puedes usar una frase introductoria breve y después una lista separada por punto y coma.
 - No inventes elementos que no aparezcan de forma clara.
-- Nunca remitas al usuario a páginas, documentos, fragmentos o apartados.
-- Si falta precisión o la lista puede no ser completa, ofrece continuar la conversación pidiendo la facultad o el área de interés.
+- Si falta precisión o no puedes asegurar que la lista esté completa, termina con una frase breve y conversacional como: "Puedo concretarte más si me indicas el grado, la facultad o el área que te interesa."
 - No uses markdown.
 - Evita explicaciones largas.
 """

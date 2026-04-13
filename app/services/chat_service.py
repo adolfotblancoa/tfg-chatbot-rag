@@ -19,7 +19,9 @@ def save_chat_interaction(user_message: str, bot_response: str) -> None:
 
 def process_chat_message(message: str) -> str:
     if is_broad_question(message):
-        return "Hay muchas titulaciones en la Universidad CEU San Pablo. ¿Te interesa alguna facultad o área en concreto como Ingeniería, Medicina, Derecho o Empresa?"
+        answer = "Hay muchos dobles grados en distintas facultades. ¿Te interesa alguna área en concreto como Ingeniería, Medicina, Farmacia, Derecho o Empresa?"
+        save_chat_interaction(message, answer)
+        return answer
 
     question_type = detect_question_type(message)
     n_results = 10 if question_type == "list" else 3
