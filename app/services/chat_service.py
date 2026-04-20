@@ -1,34 +1,36 @@
-from app.db.sqlite import get_connection
+from app.db.chat_history import get_recent_messages, save_message
 from app.rag.retriever import retrieve_context
 from app.rag.prompt_builder import build_prompt, detect_question_type, is_broad_question
 from app.rag.generator import generate_answer
+from app.services.conversation_memory import reconstruct_user_query
 
 
-def save_chat_interaction(user_message: str, bot_response: str) -> None:
-    conn = get_connection()
-    cursor = conn.cursor()
+def process_chat_message(session_id: str, message: str) -> str:
+    recent_messages = get_recent_messages(session_id=session_id, limit=6)
 
-    cursor.execute("""
-    INSERT INTO chat_logs (user_message, bot_response)
-    VALUES (?, ?)
-    """, (user_message, bot_response))
+    effective_message = reconstruct_user_query(
+        current_message=message,
+        recent_messages=recent_messages
+    )
 
-    conn.commit()
-    conn.close()
-
-
-def process_chat_message(message: str) -> str:
-    if is_broad_question(message):
-        answer = "Hay muchos dobles grados en distintas facultades. ¿Te interesa alguna área en concreto como Ingeniería, Medicina, Farmacia, Derecho o Empresa?"
-        save_chat_interaction(message, answer)
+    if is_broad_question(effective_message):
+        answer = (
+            "Hay muchos grados y dobles grados en distintas facultades. "
+            "¿Te interesa alguna área en concreto como Ingeniería, Medicina, "
+            "Farmacia, Derecho o Empresa?"
+        )
+        save_message(session_id, "user", message)
+        save_message(session_id, "assistant", answer)
         return answer
 
-    question_type = detect_question_type(message)
+    question_type = detect_question_type(effective_message)
     n_results = 10 if question_type == "list" else 3
 
-    context_chunks = retrieve_context(message, n_results=n_results)
-    prompt = build_prompt(message, context_chunks)
+    context_chunks = retrieve_context(effective_message, n_results=n_results)
+    prompt = build_prompt(effective_message, context_chunks)
     answer = generate_answer(prompt)
 
-    save_chat_interaction(message, answer)
+    save_message(session_id, "user", message)
+    save_message(session_id, "assistant", answer)
+
     return answer

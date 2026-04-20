@@ -13,10 +13,11 @@ def init_db():
     cursor = conn.cursor()
 
     cursor.execute("""
-    CREATE TABLE IF NOT EXISTS chat_logs (
+    CREATE TABLE IF NOT EXISTS chat_messages (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_message TEXT NOT NULL,
-        bot_response TEXT NOT NULL,
+        session_id TEXT NOT NULL,
+        role TEXT NOT NULL,
+        message TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
     """)

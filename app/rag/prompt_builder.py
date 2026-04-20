@@ -1,5 +1,9 @@
+import re
+
+
 def normalize_question(text: str) -> str:
     text = text.lower().strip()
+
     replacements = {
         "á": "a",
         "é": "e",
@@ -7,9 +11,14 @@ def normalize_question(text: str) -> str:
         "ó": "o",
         "ú": "u"
     }
+
     for old, new in replacements.items():
         text = text.replace(old, new)
-    return " ".join(text.split())
+
+    text = re.sub(r"[¿?.,;:!¡]", "", text)
+    text = " ".join(text.split())
+
+    return text
 
 
 def detect_question_type(user_question: str) -> str:
