@@ -81,8 +81,7 @@ Instrucciones:
 - Si aparecen varias opciones, enuméralas de forma ordenada y limpia.
 - Puedes usar una frase introductoria breve y después una lista separada por punto y coma.
 - No inventes elementos que no aparezcan de forma clara.
-- Si falta precisión o no puedes asegurar que la lista esté completa, termina con una frase breve y conversacional como: "Puedo concretarte más si me indicas el grado, la facultad o el área que te interesa."
-- No uses markdown.
+- Solo pide más concreción si la pregunta del usuario sigue siendo claramente ambigua. Si el usuario ya ha indicado un área o facultad, no termines pidiendo otra vez que la concrete.- No uses markdown.
 - Evita explicaciones largas.
 """
     else:
