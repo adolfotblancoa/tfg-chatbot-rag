@@ -30,6 +30,9 @@ def init_db():
         effective_message TEXT NOT NULL,
         question_type TEXT NOT NULL,
         bot_response TEXT NOT NULL,
+        sources TEXT,
+        pages TEXT,
+        retrieved_chunks TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
     """)

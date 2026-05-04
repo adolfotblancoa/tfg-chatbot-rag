@@ -6,7 +6,10 @@ def save_rag_log(
     original_message: str,
     effective_message: str,
     question_type: str,
-    bot_response: str
+    bot_response: str,
+    sources: str = "",
+    pages: str = "",
+    retrieved_chunks: str = ""
 ) -> None:
     conn = get_connection()
     cursor = conn.cursor()
@@ -17,15 +20,21 @@ def save_rag_log(
         original_message,
         effective_message,
         question_type,
-        bot_response
+        bot_response,
+        sources,
+        pages,
+        retrieved_chunks
     )
-    VALUES (?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     """, (
         session_id,
         original_message,
         effective_message,
         question_type,
-        bot_response
+        bot_response,
+        sources,
+        pages,
+        retrieved_chunks
     ))
 
     conn.commit()
