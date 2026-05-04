@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from app.db.models import ChatRequest, ChatResponse
 from app.db.sessions import get_or_create_session
 from app.services.chat_service import process_chat_message
+from fastapi.responses import FileResponse
 
 router = APIRouter()
 
@@ -32,3 +33,7 @@ def chat(request: ChatRequest):
         reply=reply,
         session_id=session_id
     )
+
+@router.get("/chat-ui")
+def chat_ui():
+    return FileResponse("app/static/index.html")

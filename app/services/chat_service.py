@@ -5,7 +5,8 @@ from app.db.rag_logs import save_rag_log
 from app.rag.retriever import retrieve_context_with_metadata
 from app.rag.prompt_builder import build_prompt, detect_question_type, is_broad_question
 from app.rag.generator import generate_answer
-from app.services.conversation_memory import reconstruct_user_query
+from app.services.conversation_memory import is_followup_message
+from app.services.query_rewriter import rewrite_query_with_context
 
 
 def extract_documents_and_metadata(results: dict) -> tuple[list[str], str, str, str]:
@@ -48,10 +49,13 @@ def extract_documents_and_metadata(results: dict) -> tuple[list[str], str, str, 
 def process_chat_message(session_id: str, message: str) -> str:
     recent_messages = get_recent_messages(session_id=session_id, limit=6)
 
-    effective_message = reconstruct_user_query(
-        current_message=message,
-        recent_messages=recent_messages
-    )
+    if recent_messages and is_followup_message(message):
+        effective_message = rewrite_query_with_context(
+            current_message=message,
+            recent_messages=recent_messages
+        )
+    else:
+        effective_message = message
 
     if is_broad_question(effective_message):
         question_type = "broad"
