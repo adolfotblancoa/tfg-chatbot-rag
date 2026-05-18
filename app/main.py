@@ -3,6 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from app.api.routes import router
 from app.core.config import settings
 from app.db.sqlite import init_db
+from app.api.whatsapp import router as whatsapp_router
 
 app = FastAPI(
     title=settings.app_name,
@@ -17,5 +18,6 @@ def on_startup():
 
 
 app.include_router(router)
+app.include_router(whatsapp_router)
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")

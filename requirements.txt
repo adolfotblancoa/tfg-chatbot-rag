@@ -6,3 +6,4 @@ pydantic-settings
 chromadb
 openai
 pypdf
+requests
