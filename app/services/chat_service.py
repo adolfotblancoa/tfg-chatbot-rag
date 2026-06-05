@@ -7,6 +7,7 @@ from app.rag.prompt_builder import build_prompt, detect_question_type, is_broad_
 from app.rag.generator import generate_answer
 from app.services.conversation_memory import is_followup_message
 from app.services.query_rewriter import rewrite_query_with_context
+from app.services.static_responses import get_static_response
 
 
 def extract_documents_and_metadata(results: dict) -> tuple[list[str], str, str, str]:
@@ -56,6 +57,27 @@ def process_chat_message(session_id: str, message: str) -> str:
         )
     else:
         effective_message = message
+
+    static_response = get_static_response(effective_message)
+
+    if static_response:
+        question_type = "static"
+
+        save_message(session_id, "user", message)
+        save_message(session_id, "assistant", static_response)
+
+        save_rag_log(
+            session_id=session_id,
+            original_message=message,
+            effective_message=effective_message,
+            question_type=question_type,
+            bot_response=static_response,
+            sources="",
+            pages="",
+            retrieved_chunks=""
+        )
+
+        return static_response
 
     if is_broad_question(effective_message):
         question_type = "broad"
