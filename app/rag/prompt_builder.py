@@ -55,7 +55,9 @@ def is_broad_question(user_question: str) -> bool:
         "todas las carreras",
         "todos los grados",
         "que dobles grados hay",
-        "que doble grados hay"
+        "que doble grados hay",
+        "que grados ofrece",
+        "que carreras ofrece"
     ]
 
     return question in broad_patterns

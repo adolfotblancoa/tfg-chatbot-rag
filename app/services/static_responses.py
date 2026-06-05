@@ -17,6 +17,14 @@ def get_static_response(message: str) -> str | None:
         "adios", "hasta luego", "nos vemos", "hasta pronto"
     }
 
+    faculty_keywords = [
+    "facultades",
+    "facultad",
+    "escuelas",
+    "escuela politecnica",
+    "escuela politécnica"
+    ]
+
     admission_keywords = [
         "admision", "matricula", "preinscripcion",
         "como entrar", "requisitos de acceso", "proceso de admision", "que necesito para aplicar"
@@ -40,6 +48,18 @@ def get_static_response(message: str) -> str | None:
     if text in farewells:
         return "¡Hasta luego! Ha sido un placer ayudarte."
 
+    if any(keyword in text for keyword in faculty_keywords):
+        return (
+            "La Universidad CEU San Pablo cuenta con varias facultades y escuelas:\n\n"
+            "- Facultad de Derecho\n"
+            "- Facultad de Ciencias Económicas y Empresariales\n"
+            "- Facultad de Farmacia\n"
+            "- Facultad de Medicina\n"
+            "- Facultad de Humanidades y Ciencias de la Comunicación\n"
+            "- Escuela Politécnica Superior\n\n"
+            "Si quieres, puedo darte información sobre los grados de una facultad concreta."
+        )
+    
     if any(keyword in text for keyword in admission_keywords):
         return (
             "El proceso de admisión para estudios de grado en la Universidad CEU San Pablo "
