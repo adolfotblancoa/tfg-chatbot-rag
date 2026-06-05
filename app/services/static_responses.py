@@ -24,7 +24,7 @@ def get_static_response(message: str) -> str | None:
 
     price_keywords = [
         "precio", "precios", "coste", "costo",
-        "cuanto cuesta", "tasas"
+        "cuanto cuesta", "tasas" "cuanto costaria", "cuanto costaría"
     ]
 
     if text in greetings:
