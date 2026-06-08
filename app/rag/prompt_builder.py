@@ -113,8 +113,12 @@ Instrucciones:
 - Si no hay información suficiente para responder con seguridad, indícalo de forma breve y natural.
 - Si la pregunta es ambigua, acláralo brevemente en la respuesta.
 - No uses formato markdown.
-- No uses viñetas salvo que la pregunta pida explícitamente una lista.
-- Evita saltos de línea innecesarios.
+- Responde de forma breve y directa.
+- No te extiendas salvo que la pregunta lo requiera.
+- Si la respuesta tiene varios elementos, usa viñetas o una lista numerada.
+- Evita bloques largos de texto.
+- Para WhatsApp, prioriza mensajes claros, con frases cortas y párrafos separados.
+- No repitas información innecesaria.
 """
 
     prompt = f"""
