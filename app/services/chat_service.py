@@ -48,16 +48,7 @@ def extract_documents_and_metadata(results: dict) -> tuple[list[str], str, str, 
 
 
 def process_chat_message(session_id: str, message: str) -> str:
-    recent_messages = get_recent_messages(session_id=session_id, limit=6)
-
-    if recent_messages and is_followup_message(message):
-        effective_message = rewrite_query_with_context(
-            current_message=message,
-            recent_messages=recent_messages
-        )
-    else:
-        effective_message = message
-
+    
     static_response = get_static_response(effective_message)
 
     if static_response:
@@ -77,7 +68,17 @@ def process_chat_message(session_id: str, message: str) -> str:
             retrieved_chunks=""
         )
 
-        return static_response
+        return static_response    
+    
+    recent_messages = get_recent_messages(session_id=session_id, limit=6)
+
+    if recent_messages and is_followup_message(message):
+        effective_message = rewrite_query_with_context(
+            current_message=message,
+            recent_messages=recent_messages
+        )
+    else:
+        effective_message = message
 
     if is_broad_question(effective_message):
         question_type = "broad"
