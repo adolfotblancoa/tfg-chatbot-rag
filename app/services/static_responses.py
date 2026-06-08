@@ -18,11 +18,16 @@ def get_static_response(message: str) -> str | None:
     }
 
     faculty_keywords = [
-    "facultades",
-    "facultad",
-    "escuelas",
-    "escuela politecnica",
-    "escuela politécnica"
+    "que facultades hay",
+    "qué facultades hay",
+    "facultades del ceu",
+    "facultades tiene el ceu",
+    "facultades ofrece el ceu",
+    "facultades hay en el ceu",
+    "que escuelas hay",
+    "qué escuelas hay",
+    "escuelas del ceu",
+    "escuelas tiene el ceu"
     ]
 
     admission_keywords = [
