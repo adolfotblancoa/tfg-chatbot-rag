@@ -49,7 +49,7 @@ def extract_documents_and_metadata(results: dict) -> tuple[list[str], str, str, 
 
 def process_chat_message(session_id: str, message: str) -> str:
     
-    static_response = get_static_response(effective_message)
+    static_response = get_static_response(message)
 
     if static_response:
         question_type = "static"
@@ -60,7 +60,7 @@ def process_chat_message(session_id: str, message: str) -> str:
         save_rag_log(
             session_id=session_id,
             original_message=message,
-            effective_message=effective_message,
+            effective_message=message,
             question_type=question_type,
             bot_response=static_response,
             sources="",
