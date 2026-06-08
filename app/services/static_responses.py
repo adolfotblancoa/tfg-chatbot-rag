@@ -19,6 +19,7 @@ def get_static_response(message: str) -> str | None:
 
     faculty_keywords = [
     "que facultades hay",
+    "facultades",
     "qué facultades hay",
     "facultades del ceu",
     "facultades tiene el ceu",
